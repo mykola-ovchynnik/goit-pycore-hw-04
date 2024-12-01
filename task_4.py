@@ -89,6 +89,8 @@ def main():
                 print(show_phone(args, contacts))
             case "all":
                 print(show_all(contacts))
+            case "exit" | "close":
+                print("Good bye!")
             case _:
                 print("Invalid command")
 

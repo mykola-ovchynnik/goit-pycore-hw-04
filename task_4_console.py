@@ -1,5 +1,6 @@
 import sys
 import json
+from task_4 import add_contact, change_contact, delete_contact, show_all, show_phone
 
 CONTACTS_FILE = "contacts.json"
 
@@ -22,67 +23,6 @@ def parse_input(args):
     return cmd, args[1:]
 
 
-def add_contact(args, contacts):
-    if len(args) <= 1:
-        return "Invalid number of arguments"
-
-    name, phone = args
-
-    if name in contacts:
-        return "Contact already exists."
-
-    contacts[name] = phone
-    save_contacts(contacts)
-    return "Contact added."
-
-
-def change_contact(args, contacts):
-    if len(args) <= 1:
-        return "Invalid number of arguments"
-
-    name, new_phone_number = args
-
-    if name not in contacts:
-        return "Contact does not exist."
-
-    contacts[name] = new_phone_number
-    save_contacts(contacts)
-    return "Contact updated."
-
-
-def delete_contact(args, contacts):
-    if len(args) < 1:
-        return "Invalid number of arguments"
-
-    name = args[0]
-
-    if name not in contacts:
-        return "Contact does not exist."
-
-    del contacts[name]
-    save_contacts(contacts)
-    return "Contact deleted."
-
-
-def show_all(contacts):
-    if not contacts:
-        return "No contacts found."
-
-    return contacts
-
-
-def show_phone(args, contacts):
-    if len(args) < 1:
-        return "Invalid number of arguments"
-
-    name = args[0]
-
-    if name not in contacts:
-        return "Contact does not exist."
-
-    return contacts[name]
-
-
 def main():
     contacts = load_contacts()
 
@@ -96,16 +36,22 @@ def main():
         case "hello":
             print("How can I help you?")
         case "add":
-            print(add_contact(args, contacts))
+            result = add_contact(args, contacts)
+            save_contacts(contacts)
+            print(result)
         case "change":
-            print(change_contact(args, contacts))
+            result = change_contact(args, contacts)
+            save_contacts(contacts)
+            print(result)
         case "delete":
-            print(delete_contact(args, contacts))
+            result = delete_contact(args, contacts)
+            save_contacts(contacts)
+            print(result)
         case "phone":
             print(show_phone(args, contacts))
         case "all":
             print(show_all(contacts))
-        case "exit":
+        case "exit" | "close":
             print("Good bye!")
         case _:
             print("Invalid command")
